@@ -6,7 +6,7 @@ endif
 
 if empty(glob('~/.vim/colors/badwolf.vim'))
   silent !curl -fLo ~/.vim/colors/badwolf.vim --create-dirs
-    \ https://raw.githubusercontent.com/JanRuettinger/vim/master/vim/colors/badwolf.vim
+    \ https://raw.githubusercontent.com/JanRuettinger/dotfiles/master/vim/colors/badwolf.vim
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
@@ -27,7 +27,7 @@ endfunction
 Plug 'tmhedberg/SimpylFold'
 
 Plug 'scrooloose/syntastic'
-" Plug 'ctrlpvim/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 
 call plug#end()
 
