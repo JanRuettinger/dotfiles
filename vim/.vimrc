@@ -21,7 +21,7 @@ function! BuildYCM(info)
   endif
 endfunction
 
-" Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM')}
+Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM')}
 
 " code folding for python
 Plug 'tmhedberg/SimpylFold'
