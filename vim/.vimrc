@@ -23,11 +23,15 @@ endfunction
 
 Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM')}
 
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+
 " code folding for python
 Plug 'tmhedberg/SimpylFold'
-
 Plug 'scrooloose/syntastic'
-Plug 'ctrlpvim/ctrlp.vim'
+Plug 'alvan/vim-closetag'
+ "Plug 'sheerun/vim-polyglot'
+Plug 'easymotion/vim-easymotion'
 
 call plug#end()
 
@@ -57,8 +61,10 @@ nmap <tab><up>     :leftabove  new<cr>
 nmap <tab><down>   :rightbelow new<cr>
 
 " buffers
-nnoremap <leader><leader> <C-^> " Switch between
-nnoremap <Leader>b :ls<CR>:b<Space> " Search and open
+" Switch between
+nnoremap <leader><tab> <C-^> 
+" Search and open
+nnoremap <Leader>b :ls<CR>:b<Space> 
 
 " Enable folding
 set foldmethod=indent
@@ -72,25 +78,26 @@ nnoremap <space> za
 set hidden
 
 " Python specific
-au BufNewFile,BufRead *.py
-    \ set tabstop=4
-    \ set softtabstop=4
-    \ set shiftwidth=4
-    \ set textwidth=79
-    \ set expandtab
-    \ set autoindent
-    \ set shiftround
-    \ set copyindent
-    \ set fileformat=unix
-    \ match BadWhitespace /\s\+$/ " Mark unintended whitespaces
-    \ set encoding=utf-8
+" Python, PEP-008
+au BufRead,BufNewFile *.py,*.pyw set expandtab
+au BufRead,BufNewFile *.py,*.pyw set textwidth=79
+au BufRead,BufNewFile *.py,*.pyw set tabstop=4
+au BufRead,BufNewFile *.py,*.pyw set softtabstop=4
+au BufRead,BufNewFile *.py,*.pyw set shiftwidth=4
+au BufRead,BufNewFile *.py,*.pyw set autoindent
+au         BufNewFile *.py,*.pyw set fileformat=unix
+au BufRead,BufNewFile *.py,*.pyw let b:comment_leader = '#'
 
 " HTML/JS/CSS/SCSS specific
-au BufNewFile,BufRead *.js, *.html, *.css, *.scss
-    \ set tabstop=2
-    \ set softtabstop=2
-    \ set shiftwidth=2
-
+" HTML
+au BufRead,BufNewFile *.html, *.scss, *.css  set filetype=xml
+au BufRead,BufNewFile *.html, *.scss, *.css  set expandtab
+au BufRead,BufNewFile *.html, *.scss, *.css  set tabstop=4
+au BufRead,BufNewFile *.html, *.scss, *.css  set softtabstop=4
+au BufRead,BufNewFile *.html, *.scss, *.css  set shiftwidth=4
+au BufRead,BufNewFile *.html, *.scss, *.css  set autoindent
+au         BufNewFile *.html set fileformat=unix
+au BufRead,BufNewFile *.html let b:comment_leader = '<!--'
 
 " General UI stuff
 set number		" show line numbers
@@ -122,6 +129,12 @@ if bufwinnr(1)
   map - <C-W>-
 endif
 
+:augroup numbertoggle
+:  autocmd!
+:  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+:  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+:augroup END
+
 " YouCompleteMe plugin
 let g:ycm_autoclose_preview_window_after_completion=1
 map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
@@ -144,12 +157,12 @@ let g:syntastic_javascript_checkers = ['standard']
 let g:syntastic_json_checkers = ['jsonlint']
 let g:syntastic_python_checkers = ['flake8']
 
-" ctrlpt plugin
-let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_working_path_mode = 'ra'
+" closetag plugin
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml'
+let g:closetag_close_shortcut = '<space>>'
 
-
-
+" fzf
+nnoremap <C-b> :Buffers<CR>
+nnoremap <C-g> :Ag<CR>
+nnoremap <C-p> :Files<CR>
+nnoremap <C-l> :Lines<CR>
