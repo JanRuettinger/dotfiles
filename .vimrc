@@ -14,24 +14,16 @@ endif
 " Specify a directory for plugins (for Neovim: ~/.local/share/nvim/plugged)
 call plug#begin('~/.vim/plugged')
 
-" Run install script for YouCompleteMe if it was just installed
-function! BuildYCM(info)
-  if a:info.status == 'installed' || a:info.force
-    !./install.sh
-  endif
-endfunction
-
-Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM')}
-
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
 " code folding for python
 Plug 'tmhedberg/SimpylFold'
-Plug 'scrooloose/syntastic'
 Plug 'alvan/vim-closetag'
- "Plug 'sheerun/vim-polyglot'
 Plug 'easymotion/vim-easymotion'
+
+" code linter and fixer
+Plug 'w0rp/ale'
 
 call plug#end()
 
@@ -62,9 +54,9 @@ nmap <tab><down>   :rightbelow new<cr>
 
 " buffers
 " Switch between
-nnoremap <leader><tab> <C-^> 
+nnoremap <leader><tab> <C-^>
 " Search and open
-nnoremap <Leader>b :ls<CR>:b<Space> 
+nnoremap <Leader>b :ls<CR>:b<Space>
 
 " Enable folding
 set foldmethod=indent
@@ -73,31 +65,8 @@ set foldlevel=99
 " Enable folding with the spacebar
 nnoremap <space> za
 
-
 " Open a new file without being forced to write or undo changed of current file first.
 set hidden
-
-" Python specific
-" Python, PEP-008
-au BufRead,BufNewFile *.py,*.pyw set expandtab
-au BufRead,BufNewFile *.py,*.pyw set textwidth=79
-au BufRead,BufNewFile *.py,*.pyw set tabstop=4
-au BufRead,BufNewFile *.py,*.pyw set softtabstop=4
-au BufRead,BufNewFile *.py,*.pyw set shiftwidth=4
-au BufRead,BufNewFile *.py,*.pyw set autoindent
-au         BufNewFile *.py,*.pyw set fileformat=unix
-au BufRead,BufNewFile *.py,*.pyw let b:comment_leader = '#'
-
-" HTML/JS/CSS/SCSS specific
-" HTML
-au BufRead,BufNewFile *.html, *.scss, *.css  set filetype=xml
-au BufRead,BufNewFile *.html, *.scss, *.css  set expandtab
-au BufRead,BufNewFile *.html, *.scss, *.css  set tabstop=4
-au BufRead,BufNewFile *.html, *.scss, *.css  set softtabstop=4
-au BufRead,BufNewFile *.html, *.scss, *.css  set shiftwidth=4
-au BufRead,BufNewFile *.html, *.scss, *.css  set autoindent
-au         BufNewFile *.html set fileformat=unix
-au BufRead,BufNewFile *.html let b:comment_leader = '<!--'
 
 " General UI stuff
 set number		" show line numbers
@@ -135,34 +104,24 @@ endif
 :  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
 :augroup END
 
-" YouCompleteMe plugin
-let g:ycm_autoclose_preview_window_after_completion=1
-map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
-
-
-" syntastic plugin
-let g:syntastic_auto_loc_list = 2
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_enable_balloons = 0
-let g:syntastic_error_symbol = '✗'
-let g:syntastic_ignore_files = ['\.min\.js$', '\.min\.css$']
-let g:syntastic_loc_list_height = 5
-let g:syntastic_warning_symbol = '✗'
-let g:syntastic_style_error_symbol = '∆'
-let g:syntastic_style_warning_symbol = '∆'
-
-let g:syntastic_html_checkers = []
-let g:syntastic_javascript_checkers = ['standard']
-let g:syntastic_json_checkers = ['jsonlint']
-let g:syntastic_python_checkers = ['flake8']
-
 " closetag plugin
 let g:closetag_filenames = '*.html,*.xhtml,*.phtml'
 let g:closetag_close_shortcut = '<space>>'
 
 " fzf
 nnoremap <C-b> :Buffers<CR>
-nnoremap <C-g> :Ag<CR>
+"nnoremap <C-g> :Ag<CR>
 nnoremap <C-p> :Files<CR>
-nnoremap <C-l> :Lines<CR>
+" nnoremap <C-l> :Lines<CR>
+
+" ale fixer and linter settings
+let g:ale_linters = {'python': ['autopep8']}
+
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\   'python': ['autopep8'],
+\}
+" Set this variable to 1 to fix files when you save them.
+let g:ale_fix_on_save = 1
+" Enable completion where available.
+let g:ale_completion_enabled = 1
