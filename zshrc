@@ -73,7 +73,7 @@ source $ZSH/oh-my-zsh.sh
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(git z)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -105,28 +105,7 @@ alias zshconfig="vim ~/.zshrc"
 alias sa="source venv/bin/activate"
 
 export PATH=$PATH:/usr/local/go/bin
-export GOPRIVATE=github.com/janruettinger/ethclient
-
-# added by Snowflake SnowSQL installer
-export PATH=/home/janrue/bin:$PATH
-
 export GOPATH="$HOME/go"
 export PATH="$GOPATH/bin:$PATH"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/janrue/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/janrue/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/janrue/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/janrue/miniconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<
-export CONDA_AUTO_ACTIVATE_BASE=false
