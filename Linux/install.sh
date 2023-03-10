@@ -5,6 +5,7 @@ function program_exists() {
 
     # fail on non-zero return value.
     if [ "$ret" -ne 0 ]; then
+        echo "`$1` is not installed" 
         return 1
     fi
 
@@ -35,12 +36,13 @@ function apt_get_install_dependency(){
     program_exists "pip"
     if [ "$?" -ne 0 ]; then
 	sudo apt-get install python-setuptools python-dev build-essential  -y
-	sudo easy_install pip -y
+	sudo python3-pip -y
     fi
 }
 
 # Install packages by apt-get(For Debian/Ubuntu-based distributions)
 function apt_get_install() {
+    sudo apt-get update
     apt_get_install_dependency
 
     echo "start to install git"
@@ -56,7 +58,7 @@ function apt_get_install() {
     program_exists "zsh" || sudo apt-get install zsh -y
 
     echo "change default shell to zsh"
-    program_must_exist || sudo chsh -s /bin/zsh
+    program_must_exist zsh || sudo chsh -s /bin/zsh
 
     echo "install oh-my-zsh"
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
