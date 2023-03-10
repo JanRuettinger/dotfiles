@@ -41,7 +41,7 @@ function apt_get_install() {
     program_exists "git" || sudo apt-get install git -y
 
     echo "start to install pip"
-    program_exists "pip" || sudo apt-get install python-pip -y
+    program_exists "pip" || sudo apt-get install python3-pip -y
 
     echo "start to install curl"
     program_exists "curl" || sudo apt-get install curl -y
