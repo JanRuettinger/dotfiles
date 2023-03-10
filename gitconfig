@@ -1,5 +1,6 @@
 [user]
 	email = service+git@janruettinger.com
+    name = janruettinger
 [alias]
     st = status
     co = checkout
