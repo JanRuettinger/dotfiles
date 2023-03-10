@@ -18,7 +18,8 @@ function program_must_exist() {
 
     # throw error on non-zero return value
     if [ "$?" -ne 0 ]; then
-        error "You must have '$1' installed to continue."
+        echo "You must have '$1' installed to continue."
+        exit 1
     fi
 }
 
@@ -31,15 +32,6 @@ function pip_install {
     program_exists "tldr" || pip install tldr --user
 }
 
-
-function apt_get_install_dependency(){
-    program_exists "pip"
-    if [ "$?" -ne 0 ]; then
-	sudo apt-get install python-setuptools python-dev build-essential  -y
-	sudo python3-pip -y
-    fi
-}
-
 # Install packages by apt-get(For Debian/Ubuntu-based distributions)
 function apt_get_install() {
     sudo apt-get update
@@ -47,6 +39,9 @@ function apt_get_install() {
 
     echo "start to install git"
     program_exists "git" || sudo apt-get install git -y
+
+    echo "start to install pip"
+    program_exists "pip" || sudo apt-get install python-pip -y
 
     echo "start to install curl"
     program_exists "curl" || sudo apt-get install curl -y
