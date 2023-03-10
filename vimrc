@@ -78,6 +78,7 @@ set incsearch		" search as characters are entered
 set hlsearch		" highlight matches
 set backspace=indent, eol " use backspace to delete text past the start of the insert operation
 set colorcolumn=80
+set tabstop=2
 " Always show statusline
 set laststatus=2
 nnoremap <leader><space> :nohlsearch<CR> 	"turn off search highlight

@@ -72,7 +72,12 @@ ZSH_THEME="nord-extended/nord"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git z)
+plugins=(
+  z 
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+  fzf
+  )
 
 source $ZSH/oh-my-zsh.sh
 
@@ -102,4 +107,3 @@ source $ZSH/oh-my-zsh.sh
 alias sa="source venv/bin/activate"
 
 export PATH=$PATH:$HOME/.local/bin
-

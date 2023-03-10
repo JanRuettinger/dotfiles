@@ -5,9 +5,11 @@ function program_exists() {
 
     # fail on non-zero return value.
     if [ "$ret" -ne 0 ]; then
-        echo "`$1` is not installed" 
+        echo "$1 is not installed" 
         return 1
     fi
+
+    echo "$1 is already installed"
 
     return 0
 }
@@ -24,16 +26,8 @@ function program_must_exist() {
 }
 
 
-# Install python packages by pip.
-function pip_install {
-    program_must_exist "pip"
-
-    echo "start to instlal tldr."
-    pip install tldr --user
-}
-
 # Install packages by apt-get(For Debian/Ubuntu-based distributions)
-function apt_get_install() {
+function install_programs() {
     sudo apt-get update
 
     echo "start to install git"
@@ -52,10 +46,19 @@ function apt_get_install() {
     program_exists "zsh" || sudo apt-get install zsh -y
 
     echo "install oh-my-zsh"
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" -y
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
-    echo "install noh my zsh nord theme"
+    echo "install oh-my-zsh autosuggestion plugin"
+    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+
+    echo "install oh-my-zsh syntax highlighting plugin"
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+
+    echo "install oh my zsh nord theme"
     git clone https://github.com/fxbrit/nord-extended $HOME/.oh-my-zsh/themes/nord-extended
+
+    echo "start to instlal tldr."
+    pip install tldr --user
 
     echo "start to install fzf"
     program_exists "fzf" || sudo apt-get install -y fzf
@@ -71,37 +74,41 @@ function apt_get_install() {
 
     echo "start to install tree"
     program_exists "tree" || sudo apt-get install tree -y
+
+    echo "start to install tig"
+    program_exists "tig" || sudo apt-get install tig -y 
+
+    echo "start to install fd"
+    program_exists "fd" || sudo apt-get install fd -y 
+
+    echo "start to install ripgrep"
+    program_exists "ripgrep" || sudo apt-get install ripgrep -y 
+
+    echo "start to install exa"
+    program_exists "exa" || sudo apt-get install exa -y 
+
+    echo "start to install bat"
+    program_exists "bat" || sudo apt-get install bat -y && mkdir -p ~/.local/bin && ln -s /usr/bin/batcat ~/.local/bin/bat 
 }
-
-
-# function install_awesome_tools() {
-#     if [ "$(uname)" == "Darwin" ]; then
-# 	# Do something under Mac OS X platform
-# 	echo "This is mac os"
-# 	# check if brew exists
-# 	brew_install
-#     elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
-# 	# Do something under GNU/Linux platform
-# 	if type apt-get >/dev/null 2>&1; then
-# 	    apt_get_install
-# 	elif type yum >/dev/null 2>&1; then
-# 	    yum_dnf_install
-# 	elif type pacman >/dev/null 2>&1; then
-# 	    pacman_install
-# 	fi
-# }
-
-# # Start to install all awesome tools
-# install_awesome_tools
-
-apt_get_install
-pip_install
 
 
 #==============
 # Variables
 #==============
 dotfiles_dir=~/dotfiles
+backup_dir=~/backup-dotfiles-`(date +'%m_%d_%Y_%H_%M')`
+
+#==============
+# Create backup of existing dotfiles
+#==============
+mkdir $backup_dir
+
+cp -r ~/.vim $backup_dir
+cp ~/.vimrc $backup_dir
+cp -r ~/.oh-my-zsh $backup_dir
+cp ~/.tmux.conf $backup_dir
+cp ~/.zshrc $backup_dir
+cp ~/.gitconfig $backup_dir
 
 
 #==============
@@ -109,12 +116,17 @@ dotfiles_dir=~/dotfiles
 #==============
 sudo rm -rf ~/.vim > /dev/null 2>&1
 sudo rm -rf ~/.vimrc > /dev/null 2>&1
-sudo rm -rf ~/.tmux > /dev/null 2>&1
+# sudo rm -rf ~/.tmux > /dev/null 2>&1
+sudo rm -rf ~/.oh-my-zsh > /dev/null 2>&1
 sudo rm -rf ~/.tmux.conf > /dev/null 2>&1
 sudo rm -rf ~/.zshrc > /dev/null 2>&1
+sudo rm -r ~/.zshrc.pre-oh-my-zsh > /dev/null 2>&1
 sudo rm -rf ~/.gitconfig > /dev/null 2>&1
+sudo rm -r ~/.local/bin/bat > /dev/null 2>&1
 
-ln -sf $dotfiles_dir/vim ~/.vim
+install_programs
+
+cp -r $dotfiles_dir/vim ~/.vim
 ln -sf $dotfiles_dir/vimrc ~/.vimrc
 ln -sf $dotfiles_dir/gitconfig ~/.gitconfig
 ln -sf $dotfiles_dir/tmux.conf ~/.tmux.conf
@@ -122,7 +134,7 @@ ln -sf $dotfiles_dir/zshrc ~/.zshrc
 ln -sf $dotfiles_dir/zshrc.pre-oh-my-zsh ~/.zshrc.pre-oh-my-zsh
 
 echo "change default shell to zsh"
-program_must_exist zsh || sudo chsh -s /bin/zsh
-source ~/.zshrc
+sudo chsh -s /bin/zsh
+exec zsh
 
 echo "Finished"
