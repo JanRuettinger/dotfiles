@@ -104,6 +104,7 @@ alias zshconfig="vim ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias sa="source venv/bin/activate"
 
+export PATH=$PATH:$HOME/.local/bin
 export PATH=$PATH:/usr/local/go/bin
 export GOPATH="$HOME/go"
 export PATH="$GOPATH/bin:$PATH"

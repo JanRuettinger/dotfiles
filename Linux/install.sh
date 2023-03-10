@@ -29,13 +29,12 @@ function pip_install {
     program_must_exist "pip"
 
     echo "start to instlal tldr."
-    program_exists "tldr" || pip install tldr --user
+    pip install tldr --user
 }
 
 # Install packages by apt-get(For Debian/Ubuntu-based distributions)
 function apt_get_install() {
     sudo apt-get update
-    apt_get_install_dependency
 
     echo "start to install git"
     program_exists "git" || sudo apt-get install git -y
