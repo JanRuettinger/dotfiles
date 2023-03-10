@@ -51,9 +51,6 @@ function apt_get_install() {
     echo "start to install zsh"
     program_exists "zsh" || sudo apt-get install zsh -y
 
-    echo "change default shell to zsh"
-    program_must_exist zsh || sudo chsh -s /bin/zsh
-
     echo "install oh-my-zsh"
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" -y
 
@@ -124,6 +121,8 @@ ln -sf $dotfiles_dir/tmux.conf ~/.tmux.conf
 ln -sf $dotfiles_dir/zshrc ~/.zshrc
 ln -sf $dotfiles_dir/zshrc.pre-oh-my-zsh ~/.zshrc.pre-oh-my-zsh
 
+echo "change default shell to zsh"
+program_must_exist zsh || sudo chsh -s /bin/zsh
 source ~/.zshrc
 
 echo "Finished"
