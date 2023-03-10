@@ -55,7 +55,7 @@ function apt_get_install() {
     program_must_exist zsh || sudo chsh -s /bin/zsh
 
     echo "install oh-my-zsh"
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" -y
 
     echo "install noh my zsh nord theme"
     git clone https://github.com/fxbrit/nord-extended $HOME/.oh-my-zsh/themes/nord-extended
@@ -124,5 +124,6 @@ ln -sf $dotfiles_dir/tmux.conf ~/.tmux.conf
 ln -sf $dotfiles_dir/zshrc ~/.zshrc
 ln -sf $dotfiles_dir/zshrc.pre-oh-my-zsh ~/.zshrc.pre-oh-my-zsh
 
+source ~/.zshrc
 
 echo "Finished"

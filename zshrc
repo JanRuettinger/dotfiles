@@ -4,7 +4,6 @@
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="nord-extended/nord"
-source $ZSH/oh-my-zsh.sh
 
 
 # Set name of the theme to load --- if set to "random", it will
@@ -100,13 +99,7 @@ source $ZSH/oh-my-zsh.sh
 # For a full list of active aliases, run `alias`.
 #
 # Example aliases
-alias zshconfig="vim ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
 alias sa="source venv/bin/activate"
 
 export PATH=$PATH:$HOME/.local/bin
-export PATH=$PATH:/usr/local/go/bin
-export GOPATH="$HOME/go"
-export PATH="$GOPATH/bin:$PATH"
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
